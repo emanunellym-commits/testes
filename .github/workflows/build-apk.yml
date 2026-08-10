@@ -41,17 +41,21 @@ jobs:
         working-directory: mobile
         run: flutter pub get
 
+      - name: Analyze V13
+        working-directory: mobile
+        run: flutter analyze
+
       - name: Build release APK
         working-directory: mobile
         run: flutter build apk --release
 
       - name: Prepare APK
-        run: cp mobile/build/app/outputs/flutter-apk/app-release.apk LiveChat-V12-Demo.apk
+        run: cp mobile/build/app/outputs/flutter-apk/app-release.apk LiveChat-V13-Online.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: LiveChat-V12-Demo-Android
-          path: LiveChat-V12-Demo.apk
+          name: LiveChat-V13-Online-Android
+          path: LiveChat-V13-Online.apk
           if-no-files-found: error
           retention-days: 30
