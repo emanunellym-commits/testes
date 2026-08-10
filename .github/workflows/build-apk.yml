@@ -18,7 +18,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Java
+      - name: Setup Java 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -30,33 +30,28 @@ jobs:
           channel: stable
           cache: true
 
-      - name: Verify mobile project
-        run: |
-          test -f mobile/pubspec.yaml || (echo 'mobile/pubspec.yaml não encontrado' && exit 1)
+      - name: Flutter version
+        run: flutter --version
 
-      - name: Create Android platform files
+      - name: Generate Android project
         working-directory: mobile
-        run: flutter create --platforms=android .
+        run: flutter create --platforms=android --project-name livechat_messenger .
 
       - name: Install dependencies
         working-directory: mobile
         run: flutter pub get
 
-      - name: Analyze
+      - name: Build release APK
         working-directory: mobile
-        run: flutter analyze
+        run: flutter build apk --release
 
-      - name: Build APK
-        working-directory: mobile
-        run: flutter build apk --release --dart-define=API_URL=${{ vars.LIVECHAT_API_URL || 'http://10.0.2.2:3000' }}
-
-      - name: Rename APK
-        run: cp mobile/build/app/outputs/flutter-apk/app-release.apk LiveChat-V12.apk
+      - name: Prepare APK
+        run: cp mobile/build/app/outputs/flutter-apk/app-release.apk LiveChat-V12-Demo.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: LiveChat-V12-Android
-          path: LiveChat-V12.apk
+          name: LiveChat-V12-Demo-Android
+          path: LiveChat-V12-Demo.apk
           if-no-files-found: error
           retention-days: 30
