@@ -1,7 +1,7 @@
 name: livechat_messenger
-description: LiveChat Messenger Android Demo
+description: LiveChat Messenger V13 Online
 publish_to: "none"
-version: 0.12.0+12
+version: 0.13.0+13
 
 environment:
   sdk: ">=3.8.0 <4.0.0"
@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  web_socket_channel: ^3.0.3
+  shared_preferences: ^2.5.3
 
 dev_dependencies:
   flutter_test:
