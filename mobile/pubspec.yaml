@@ -1,0 +1,52 @@
+name: livechat_messenger
+description: LiveChat Messenger V9
+publish_to: "none"
+version: 0.9.0+9
+
+environment:
+  sdk: ">=3.8.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  go_router: ^17.3.0
+  dio: ^5.0.0
+  socket_io_client: ^3.1.2
+  flutter_secure_storage: ^9.2.4
+  image_picker: ^1.1.2
+  file_picker: ^10.0.0
+  record: ^6.0.0
+  path_provider: ^2.1.5
+  url_launcher: ^6.3.0
+  flutter_webrtc: ^1.5.2
+  firebase_core: ^4.0.0
+  firebase_messaging: ^16.0.0
+  flutter_local_notifications: ^19.0.0
+  uuid: ^4.5.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.0
+  flutter_native_splash: ^2.4.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/branding/
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/branding/app_icon.png"
+  min_sdk_android: 23
+
+flutter_native_splash:
+  color: "#071A33"
+  image: assets/branding/splash_logo.png
+  android: true
+  ios: true
+  android_12:
+    color: "#071A33"
+    image: assets/branding/splash_logo.png

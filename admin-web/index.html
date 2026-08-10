@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LiveChat Admin V11</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:#061529;color:#fff}
+header{padding:20px 28px;background:#0a2445;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0}
+main{max-width:1280px;margin:auto;padding:24px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.card{background:#0d2545;border:1px solid #173d69;border-radius:18px;padding:18px}.big{font-size:32px;font-weight:900;margin-top:8px}
+input,button,select,textarea{border:0;border-radius:10px;padding:11px}input,select,textarea{background:#15375e;color:#fff;width:100%;margin:6px 0}
+button{background:#0878ff;color:#fff;font-weight:800;cursor:pointer}table{width:100%;border-collapse:collapse;margin-top:12px}
+td,th{padding:11px;border-bottom:1px solid #21496f;text-align:left}small{color:#9cb5d0}.tabs{display:flex;gap:8px;margin:20px 0}
+</style>
+</head>
+<body>
+<header><div><strong>LiveChat Admin</strong><br><small>V11 • Segurança & Suporte</small></div></header>
+<main>
+<section class="card">
+<h3>Conexão</h3>
+<input id="api" placeholder="https://api.seudominio.com">
+<input id="token" placeholder="JWT de administrador">
+<button onclick="loadAll()">Carregar</button>
+</section>
+
+<div class="grid" style="margin-top:18px">
+<div class="card">Usuários<div class="big" id="users">-</div></div>
+<div class="card">Mensagens<div class="big" id="messages">-</div></div>
+<div class="card">Conversas<div class="big" id="conversations">-</div></div>
+<div class="card">Denúncias abertas<div class="big" id="openReports">-</div></div>
+<div class="card">Suspensos<div class="big" id="suspendedUsers">-</div></div>
+</div>
+
+<section class="card" style="margin-top:18px">
+<h3>Denúncias</h3>
+<table><thead><tr><th>Motivo</th><th>Usuário</th><th>Status</th><th>Detalhes</th></tr></thead><tbody id="reports"></tbody></table>
+</section>
+
+<section class="card" style="margin-top:18px">
+<h3>Tickets de suporte</h3>
+<table><thead><tr><th>Usuário</th><th>Assunto</th><th>Prioridade</th><th>Status</th><th>Última mensagem</th></tr></thead><tbody id="tickets"></tbody></table>
+</section>
+</main>
+<script>
+async function api(path){
+ const base=document.getElementById('api').value.replace(/\/$/,'');
+ const token=document.getElementById('token').value;
+ const r=await fetch(base+path,{headers:{Authorization:'Bearer '+token}});
+ if(!r.ok)throw new Error(await r.text());return r.json();
+}
+async function loadAll(){
+ try{
+  const d=await api('/admin/dashboard');
+  for(const k of ['users','messages','conversations','openReports','suspendedUsers'])document.getElementById(k).textContent=d[k];
+  const reports=await api('/admin/reports');
+  document.getElementById('reports').innerHTML=reports.map(r=>`<tr><td>${r.reason}</td><td>${r.reportedUser?.displayName||'-'}</td><td>${r.status}</td><td>${r.details||r.message?.body||'-'}</td></tr>`).join('');
+  const tickets=await api('/admin/support');
+  document.getElementById('tickets').innerHTML=tickets.map(t=>`<tr><td>${t.user?.displayName||'-'}</td><td>${t.subject}</td><td>${t.priority}</td><td>${t.status}</td><td>${t.messages?.at(-1)?.body||'-'}</td></tr>`).join('');
+ }catch(e){alert('Erro: '+e.message)}
+}
+</script>
+</body>
+</html>

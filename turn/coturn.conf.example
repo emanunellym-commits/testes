@@ -1,0 +1,10 @@
+listening-port=3478
+fingerprint
+lt-cred-mech
+realm=turn.seudominio.com
+user=livechat:TROQUE_ESTA_SENHA
+no-multicast-peers
+no-loopback-peers
+stale-nonce
+total-quota=1200
+bps-capacity=0
