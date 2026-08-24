@@ -1,7 +1,7 @@
 name: livechat_messenger
-description: LiveChat Messenger V13 Online
+description: LiveChat Messenger V14 Premium
 publish_to: "none"
-version: 0.13.1+14
+version: 0.14.0+15
 
 environment:
   sdk: ">=3.8.0 <4.0.0"
