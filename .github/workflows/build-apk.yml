@@ -37,6 +37,18 @@ jobs:
         working-directory: mobile
         run: flutter create --platforms=android --project-name livechat_messenger .
 
+      - name: Enable cleartext WebSocket for testing
+        working-directory: mobile
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('android/app/src/main/AndroidManifest.xml')
+          s = p.read_text()
+          if 'android:usesCleartextTraffic=' not in s:
+              s = s.replace('<application', '<application android:usesCleartextTraffic="true"', 1)
+          p.write_text(s)
+          PY
+
       - name: Remove generated default test
         working-directory: mobile
         run: rm -f test/widget_test.dart
@@ -45,7 +57,7 @@ jobs:
         working-directory: mobile
         run: flutter pub get
 
-      - name: Analyze V13 entrypoint
+      - name: Analyze V14 entrypoint
         working-directory: mobile
         run: flutter analyze lib/main.dart --no-fatal-infos --no-fatal-warnings
 
@@ -54,12 +66,12 @@ jobs:
         run: flutter build apk --release
 
       - name: Prepare APK
-        run: cp mobile/build/app/outputs/flutter-apk/app-release.apk LiveChat-V13-Online.apk
+        run: cp mobile/build/app/outputs/flutter-apk/app-release.apk LiveChat-V14-Premium.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: LiveChat-V13-Online-Android
-          path: LiveChat-V13-Online.apk
+          name: LiveChat-V14-Premium-Android
+          path: LiveChat-V14-Premium.apk
           if-no-files-found: error
           retention-days: 30
